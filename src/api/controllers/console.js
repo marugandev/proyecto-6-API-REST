@@ -46,26 +46,6 @@ const postConsole = async (req, res, next) => {
   }
 };
 
-/* const putConsole = async (req, res, next) => {
-  try {
-    const { id } = req.params;
-
-    const newConsole = new Console(req.body);
-
-    newConsole._id = id;
-
-    const consoleUpdated = await Console.findByIdAndUpdate(id, newConsole, {
-      new: true
-    }).populate("videogames");
-
-    return res.status(200).json({
-      message: "Consola actualizada",
-      elemento: consoleUpdated
-    });
-  } catch (error) {
-    return res.status(400).json("Error al actualizar las consolas");
-  }
-}; */
 const putConsole = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -91,9 +71,7 @@ const putConsole = async (req, res, next) => {
 const deleteConsole = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const consoleDeleted = await Console.findByIdAndDelete(id).populate(
-      "videogames"
-    );
+    const consoleDeleted = await Console.findByIdAndDelete(id);
     return res.status(200).json({
       message: "Consola eliminada",
       elemento: consoleDeleted

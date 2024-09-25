@@ -170,7 +170,7 @@ Para que la aplicación funcione correctamente, debes instalar las siguientes de
 Puedes instalar todas las dependencias necesarias ejecutando:
 
 ```bash
-npm install
+npm i
 ```
 
 ## Middleware
