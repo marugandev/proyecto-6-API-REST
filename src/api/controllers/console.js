@@ -49,22 +49,34 @@ const postConsole = async (req, res, next) => {
 const putConsole = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { videogames } = req.body;
+    const { name, manufacturer, price, stock, videogames } = req.body;
 
-    const consoleUpdated = await Console.findByIdAndUpdate(
-      id,
-      { $addToSet: { videogames: videogames } },
-      {
-        new: true
-      }
-    ).populate("videogames");
+    const updateData = {};
+
+    if (name !== undefined) updateData.name = name;
+    if (manufacturer !== undefined) updateData.manufacturer = manufacturer;
+    if (price !== undefined) updateData.price = price;
+    if (stock !== undefined) updateData.stock = stock;
+
+    if (videogames && videogames.length > 0) {
+      updateData.$addToSet = { videogames: { $each: videogames } };
+    }
+
+    const consoleUpdated = await Console.findByIdAndUpdate(id, updateData, {
+      new: true,
+      runValidators: false
+      /*  omitUndefined: true */
+    }).populate("videogames");
 
     return res.status(200).json({
       message: "Consola actualizada",
       elemento: consoleUpdated
     });
   } catch (error) {
-    return res.status(400).json("Error al actualizar las consolas");
+    return res.status(400).json({
+      message: "Error al actualizar la consola",
+      error: error.message
+    });
   }
 };
 
